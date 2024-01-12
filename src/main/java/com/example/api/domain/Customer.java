@@ -1,59 +1,55 @@
 package com.example.api.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Entity
 @Table(name = "CUSTOMER")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Customer {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
+    @Setter
+    private Long id;
 
-	@Column(nullable = false)
-	private String name;
+    @Column(nullable = false)
+    @Getter
+    @Setter
+    private String name;
 
-	@Column(nullable = false)
-	@NotEmpty
-	@Email
-	private String email;
+    @Column(nullable = false)
+    @NotEmpty
+    @Email
+    @Getter
+    @Setter
+    private String email;
 
-	@Column(nullable = false)
-	@NotEmpty
-	private String gender;
+    @Column(nullable = false)
+    @NotEmpty
+    @Getter
+    @Setter
+    private String gender;
 
-	public Long getId() {
-		return id;
-	}
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @Getter
+    @Setter
+    @JsonProperty("addresses")
+    private List<Address> addressList;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
+    public Customer(String name, String email, String gender) {
+        this.name = name;
+        this.email = email;
+        this.gender = gender;
+    }
 }
